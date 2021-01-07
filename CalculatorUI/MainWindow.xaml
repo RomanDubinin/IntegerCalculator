@@ -1,0 +1,77 @@
+﻿<Window x:Class="CalculatorUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CalculatorUI"
+        mc:Ignorable="d"
+        Title="Calculator" Height="450" Width="600" KeyDown="Key_Click">
+    <Grid Name="Screen">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0"
+                 Name="ExpressionScreen"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Right"
+                 FontSize="40"
+                 HorizontalScrollBarVisibility="Auto"
+                 Focusable="False"
+                 FontFamily="Courier New"
+                 BorderThickness="0"/>
+        <TextBox Grid.Row="1"
+                 Name="ErrorScreen"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Right"
+                 FontSize="20"
+                 HorizontalScrollBarVisibility="Auto"
+                 Focusable="False"
+                 FontFamily="Courier New"
+                 BorderThickness="0"/>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="1"
+                     Grid.Row="0"
+                     Grid.ColumnSpan="3"
+                     Name="AnswerScreen"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Right"
+                     FontSize="40"
+                     HorizontalScrollBarVisibility="Auto"
+                     Focusable="False"
+                     FontFamily="Courier New"
+                     BorderThickness="0" />
+            <Button Content="1"   Grid.Column="0" Grid.Row="1" Click="Digit_Click" />
+            <Button Content="2"   Grid.Column="1" Grid.Row="1" Click="Digit_Click" />
+            <Button Content="3"   Grid.Column="2" Grid.Row="1" Click="Digit_Click" />
+            <Button Content="4"   Grid.Column="0" Grid.Row="2" Click="Digit_Click" />
+            <Button Content="5"   Grid.Column="1" Grid.Row="2" Click="Digit_Click" />
+            <Button Content="6"   Grid.Column="2" Grid.Row="2" Click="Digit_Click" />
+            <Button Content="7"   Grid.Column="0" Grid.Row="3" Click="Digit_Click" />
+            <Button Content="8"   Grid.Column="1" Grid.Row="3" Click="Digit_Click" />
+            <Button Content="9"   Grid.Column="2" Grid.Row="3" Click="Digit_Click" />
+            <Button Content="0"   Grid.Column="0" Grid.Row="4" Click="Digit_Click" />
+            <Button Content="C"   Grid.Column="1" Grid.Row="4" Click="Backspace_Click" />
+            <Button Content="DEL" Grid.Column="2" Grid.Row="4" Click="Delete_Click" />
+            <Button Content="="   Grid.Column="0" Grid.Row="0" Click="Calculate_Click" />
+            <Button Content="+"   Grid.Column="3" Grid.Row="1" Click="Operation_Click" />
+            <Button Content="-"   Grid.Column="3" Grid.Row="2" Click="Operation_Click" />
+            <Button Content="*"   Grid.Column="3" Grid.Row="3" Click="Operation_Click" />
+            <Button Content="/"   Grid.Column="3" Grid.Row="4" Click="Operation_Click" />
+        </Grid>
+    </Grid>
+</Window>
