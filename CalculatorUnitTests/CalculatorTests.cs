@@ -27,7 +27,7 @@ namespace CalculatorUnitTests
         [TestCase("1+1+1*2*2*2*2+1+1+1+1", 22)]
         public void CalculationTest(string expression, long expectedValue)
         {
-            var actualValue = calculator.Calculate(expression);
+            var actualValue = calculator.CalculateFromString(expression).Result;
             Assert.AreEqual(expectedValue, actualValue);
         }
     }

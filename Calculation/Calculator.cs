@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,10 +7,29 @@ namespace Calculation
 {
     public class Calculator
     {
-        public long Calculate(string expression)
+        public CalculationResult CalculateFromString(string expression)
         {
-            var tokens = GetTokens(ExpressionNormalizer.NormalizeExpression(expression));
+            var validationResult = Validator.GetIndexOfInvalidCharacter(expression);
+            long? result = null;
+            string calculationError = null;
+            if (validationResult.IsSuccess)
+                try
+                {
+                    var tokens = GetTokens(ExpressionNormalizer.NormalizeExpression(expression));
+                    result = CalculateInternal(tokens);
+                }
+                catch (OverflowException)
+                {
+                    calculationError = "Too large numbers";
+                }
 
+            return new CalculationResult {Result = result, Validation = validationResult, CalculationError = calculationError};
+        }
+
+        //todo make CalculateFromStream for very long expressions
+
+        private long CalculateInternal(IEnumerable<string> tokens)
+        {
             var operators = new Stack<string>();
             var operands = new Stack<long>();
 

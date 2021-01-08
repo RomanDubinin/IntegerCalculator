@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Calculation;
-using ValidationResult = Calculation.ValidationResult;
 
 namespace CalculatorUI
 {
@@ -15,8 +13,8 @@ namespace CalculatorUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private StringBuilder expression;
-        private readonly char[] operations = new[] {'+', '-', '*', '/'};
+        private readonly StringBuilder expression;
+        private readonly char[] operations = {'+', '-', '*', '/'};
         private readonly Calculator calculator;
 
         public MainWindow()
@@ -95,25 +93,27 @@ namespace CalculatorUI
         private async void CalculateAndShowResult()
         {
             Screen.IsEnabled = false;
-            var (result, validationResult, calculationError) = await Task.Run(Calculate).ConfigureAwait(true);
+            var calculationResult = await Task
+                                          .Run(() => calculator.CalculateFromString(expression.ToString()))
+                                          .ConfigureAwait(true);
             Screen.IsEnabled = true;
             expression.Clear();
 
-            if (!validationResult.IsSuccess)
+            if (!calculationResult.Validation.IsSuccess)
             {
-                ExpressionScreen.Text += "\n" + new string(' ', validationResult.ErrorPosition) + "^";
-                ErrorScreen.Text = validationResult.ErrorMessage;
+                ExpressionScreen.Text += "\n" + new string(' ', calculationResult.Validation.ErrorPosition) + "^";
+                ErrorScreen.Text = calculationResult.Validation.ErrorMessage;
                 AnswerScreen.Text = "";
             }
-            else if (calculationError != null)
+            else if (calculationResult.CalculationError != null)
             {
-                ErrorScreen.Text = calculationError;
+                ErrorScreen.Text = calculationResult.CalculationError;
                 AnswerScreen.Text = "";
             }
             else
             {
                 ErrorScreen.Text = "";
-                AnswerScreen.Text = result.ToString();
+                AnswerScreen.Text = calculationResult.Result.ToString();
             }
         }
 
@@ -129,25 +129,6 @@ namespace CalculatorUI
                 expression.Remove(expression.Length-1, 1);
 
             ExpressionScreen.Text = expression.ToString();
-        }
-
-        private (long? result, ValidationResult validationResult, string calculationError) Calculate()
-        {
-            var expressionString = expression.ToString();
-            var validationResult = Validator.GetIndexOfInvalidCharacter(expressionString);
-            long? result = null;
-            string calculationError = null;
-            if (validationResult.IsSuccess)
-                try
-                {
-                    result = calculator.Calculate(expressionString);
-                }
-                catch (OverflowException)
-                {
-                    calculationError = "Too large numbers";
-                }
-
-            return (result, validationResult, calculationError);
         }
 
         private void ScrollToEnd()
