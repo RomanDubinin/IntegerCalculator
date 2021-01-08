@@ -15,6 +15,9 @@ namespace Calculation
         {
             foreach (var expression in expressions)
             {
+                if (expression.Length == 0)
+                    continue;
+
                 var result = calculator.CalculateFromString(expression);
 
                 if (!result.Validation.IsSuccess)

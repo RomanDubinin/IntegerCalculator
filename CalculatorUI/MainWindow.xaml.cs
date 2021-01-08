@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Calculation;
+using Microsoft.Win32;
 
 namespace CalculatorUI
 {
@@ -17,11 +19,16 @@ namespace CalculatorUI
         private readonly char[] operations = {'+', '-', '*', '/'};
         private readonly Calculator calculator;
 
+        private string fileToCalculate;
+        private string fileToSaveCalculations;
+        private readonly BunchCalculator bunchCalculator;
+
         public MainWindow()
         {
             InitializeComponent();
             expression = new StringBuilder(500);
             calculator = new Calculator();
+            bunchCalculator = new BunchCalculator(calculator);
         }
 
         private void Digit_Click(object sender, RoutedEventArgs e)
@@ -73,6 +80,29 @@ namespace CalculatorUI
             if (e.Key == Key.Back) RemoveLastCharacter();
         }
 
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                fileToCalculate = openFileDialog.FileName;
+                OpenFileButton.Visibility = Visibility.Hidden;
+                SaveFileButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                fileToSaveCalculations = saveFileDialog.FileName;
+                SaveFileButton.Visibility = Visibility.Hidden;
+                await Task.Run(() => CalculateFile()).ConfigureAwait(true);
+                OpenFileButton.Visibility = Visibility.Visible;
+            }
+        }
+
         private void AddDigit(string digit)
         {
             expression.Append(digit);
@@ -92,6 +122,9 @@ namespace CalculatorUI
 
         private async void CalculateAndShowResult()
         {
+            if (expression.Length == 0)
+                return;
+
             Screen.IsEnabled = false;
             var calculationResult = await Task
                                           .Run(() => calculator.CalculateFromString(expression.ToString()))
@@ -115,6 +148,13 @@ namespace CalculatorUI
                 ErrorScreen.Text = "";
                 AnswerScreen.Text = calculationResult.Result.ToString();
             }
+        }
+
+        private void CalculateFile()
+        {
+            var expressions = File.ReadLines(fileToCalculate);
+            var results = bunchCalculator.Calculate(expressions);
+            File.WriteAllLines(fileToSaveCalculations, results);
         }
 
         private void Delete()

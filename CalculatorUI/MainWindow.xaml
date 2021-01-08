@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalculatorUI"
         mc:Ignorable="d"
-        Title="Calculator" Height="450" Width="600" KeyDown="Key_Click">
+        Title="Calculator" Height="550" Width="500" KeyDown="Key_Click">
     <Grid Name="Screen">
         <Grid.RowDefinitions>
             <RowDefinition Height="120" />
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0"
                  Name="ExpressionScreen"
@@ -72,6 +73,14 @@
             <Button Content="-"   Grid.Column="3" Grid.Row="2" Click="Operation_Click" />
             <Button Content="*"   Grid.Column="3" Grid.Row="3" Click="Operation_Click" />
             <Button Content="/"   Grid.Column="3" Grid.Row="4" Click="Operation_Click" />
+        </Grid>
+        <Grid Row="3">
+            <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
+                <Button Name="OpenFileButton" Content="Open file" Click="OpenFile_Click"/>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
+                <Button Name="SaveFileButton" Content="Save file" Click="SaveFile_Click" Visibility="Hidden"/>
+            </WrapPanel>
         </Grid>
     </Grid>
 </Window>
