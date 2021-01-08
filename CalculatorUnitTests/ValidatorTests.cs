@@ -15,11 +15,25 @@ namespace CalculatorUnitTests
         [TestCase("1+*1", 1, "Value missed at position 1")]
         [TestCase("*1+1", 0, "Value missed at position 0")]
         [TestCase("1+1 /", 4, "Value missed at position 4")]
-        [TestCase("1 *+1", null, null)]
-        public void ValidationTest(string expression, int? expectedPosition, string expectedMessage)
+        public void ValidationInvalidTest(string expression, int expectedPosition, string expectedMessage)
         {
             var actual = Validator.GetIndexOfInvalidCharacter(expression);
-            Assert.AreEqual((expectedPosition, expectedMessage), actual);
+            var expected = new ValidationResult
+            {
+                IsSuccess = false,
+                ErrorPosition = expectedPosition,
+                ErrorMessage = expectedMessage
+            };
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("1 *+1")]
+        public void ValidationValidTest(string expression)
+        {
+            var actual = Validator.GetIndexOfInvalidCharacter(expression);
+            var expected = new ValidationResult {IsSuccess = true};
+            Assert.AreEqual(expected, actual);
         }
     }
 }

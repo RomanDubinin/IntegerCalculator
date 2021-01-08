@@ -5,7 +5,7 @@ namespace Calculation
 {
     public static class Validator
     {
-        public static (int? Position, string Message) GetIndexOfInvalidCharacter(string expression)
+        public static ValidationResult GetIndexOfInvalidCharacter(string expression)
         {
             var binaryOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators);
             var allOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators.Concat(OperatorsProvider.DefaultUnaryOperators));
@@ -20,15 +20,27 @@ namespace Calculation
             var operationsWithoutValuesMatch = Regex.Match(expression, operationsWithoutValuesPattern);
 
             if (unacceptableSymbolsMatch.Success)
-                return (unacceptableSymbolsMatch.Index, $"Invalid character {unacceptableSymbolsMatch.Value} at position {unacceptableSymbolsMatch.Index}");
+                return new ValidationResult
+                {
+                    ErrorPosition = unacceptableSymbolsMatch.Index,
+                    ErrorMessage = $"Invalid character {unacceptableSymbolsMatch.Value} at position {unacceptableSymbolsMatch.Index}"
+                };
 
             if (valuesWithoutOperationMatch.Success)
-                return (valuesWithoutOperationMatch.Groups[1].Index, $"Operation missed at position {valuesWithoutOperationMatch.Groups[1].Index}");
+                return new ValidationResult
+                {
+                    ErrorPosition = valuesWithoutOperationMatch.Groups[1].Index,
+                    ErrorMessage = $"Operation missed at position {valuesWithoutOperationMatch.Groups[1].Index}"
+                };
 
             if (operationsWithoutValuesMatch.Success)
-                return (operationsWithoutValuesMatch.Index, $"Value missed at position {operationsWithoutValuesMatch.Index}");
+                return new ValidationResult
+                {
+                    ErrorPosition = operationsWithoutValuesMatch.Index,
+                    ErrorMessage = $"Value missed at position {operationsWithoutValuesMatch.Index}"
+                };
 
-            return (null, null);
+            return new ValidationResult {IsSuccess = true};
         }
     }
 }

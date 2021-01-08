@@ -50,7 +50,7 @@
                      Name="AnswerScreen"
                      VerticalAlignment="Top"
                      HorizontalAlignment="Right"
-                     FontSize="40"
+                     FontSize="30"
                      HorizontalScrollBarVisibility="Auto"
                      Focusable="False"
                      FontFamily="Courier New"
