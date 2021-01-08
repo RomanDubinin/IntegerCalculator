@@ -11,7 +11,7 @@
             <RowDefinition Height="120" />
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0"
                  Name="ExpressionScreen"
@@ -80,6 +80,10 @@
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
                 <Button Name="SaveFileButton" Content="Save file" Click="SaveFile_Click" Visibility="Hidden"/>
+                <Label Name="FileToCalculateLabel" Visibility="Hidden"/>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
+                <Label Name="CalculatingInProcessLabel" Visibility="Hidden"/>
             </WrapPanel>
         </Grid>
     </Grid>

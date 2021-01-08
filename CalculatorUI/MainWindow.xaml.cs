@@ -87,7 +87,10 @@ namespace CalculatorUI
             {
                 fileToCalculate = openFileDialog.FileName;
                 OpenFileButton.Visibility = Visibility.Hidden;
+
                 SaveFileButton.Visibility = Visibility.Visible;
+                FileToCalculateLabel.Content = $"File {fileToCalculate} is selected to calculate.";
+                FileToCalculateLabel.Visibility = Visibility.Visible;
             }
         }
 
@@ -98,7 +101,14 @@ namespace CalculatorUI
             {
                 fileToSaveCalculations = saveFileDialog.FileName;
                 SaveFileButton.Visibility = Visibility.Hidden;
-                await Task.Run(() => CalculateFile()).ConfigureAwait(true);
+                FileToCalculateLabel.Visibility = Visibility.Hidden;
+
+                CalculatingInProcessLabel.Content = $"Calculating into file {fileToSaveCalculations} ...";
+                CalculatingInProcessLabel.Visibility = Visibility.Visible;
+
+                await Task.Run(CalculateFile).ConfigureAwait(true);
+
+                CalculatingInProcessLabel.Visibility = Visibility.Hidden;
                 OpenFileButton.Visibility = Visibility.Visible;
             }
         }
