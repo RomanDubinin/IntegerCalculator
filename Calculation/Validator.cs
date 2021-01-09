@@ -5,9 +5,9 @@ namespace Calculation
 {
     public class Validator
     {
-        private readonly string unacceptableSymbolsPattern;
-        private readonly string valuesWithoutOperationPattern;
-        private readonly string operationsWithoutValuesPattern;
+        private readonly Regex unacceptableSymbolsPatternRegex;
+        private readonly Regex valuesWithoutOperationPatternRegex;
+        private readonly Regex operationsWithoutValuesPatternRegex;
 
         public Validator()
         {
@@ -15,17 +15,16 @@ namespace Calculation
             var allOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators.Concat(OperatorsProvider.DefaultUnaryOperators));
             var onlyBinaryOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators.Except(OperatorsProvider.DefaultUnaryOperators));
 
-            unacceptableSymbolsPattern = $@"[^\d {allOperations}]";
-            valuesWithoutOperationPattern = @"\d( +)\d";
-            operationsWithoutValuesPattern = $"(^ *[{onlyBinaryOperations}])|([{binaryOperations}] *[{onlyBinaryOperations}])|([{binaryOperations}] *[{binaryOperations}] *[{binaryOperations}])|([{binaryOperations}] *$)";
-
+            unacceptableSymbolsPatternRegex = new Regex($@"[^\d {allOperations}]");
+            valuesWithoutOperationPatternRegex = new Regex(@"\d( +)\d");
+            operationsWithoutValuesPatternRegex = new Regex($"(^ *[{onlyBinaryOperations}])|([{binaryOperations}] *[{onlyBinaryOperations}])|([{binaryOperations}] *[{binaryOperations}] *[{binaryOperations}])|([{binaryOperations}] *$)");
         }
 
         public ValidationResult GetIndexOfInvalidCharacter(string expression)
         {
-            var unacceptableSymbolsMatch = Regex.Match(expression, unacceptableSymbolsPattern);
-            var valuesWithoutOperationMatch = Regex.Match(expression, valuesWithoutOperationPattern);
-            var operationsWithoutValuesMatch = Regex.Match(expression, operationsWithoutValuesPattern);
+            var unacceptableSymbolsMatch = unacceptableSymbolsPatternRegex.Match(expression);
+            var valuesWithoutOperationMatch = valuesWithoutOperationPatternRegex.Match(expression);
+            var operationsWithoutValuesMatch = operationsWithoutValuesPatternRegex.Match(expression);
 
             if (unacceptableSymbolsMatch.Success)
                 return new ValidationResult

@@ -9,13 +9,13 @@ namespace Calculation
     {
         private readonly Validator validator;
         private readonly ExpressionNormalizer normalizer;
-        private readonly string splitPattern;
+        private readonly Regex splitRegex;
 
         public Calculator(Validator validator, ExpressionNormalizer normalizer)
         {
             this.validator = validator;
             this.normalizer = normalizer;
-            splitPattern = $"([{string.Join(@"\", OperatorsProvider.ExtendedOperators)}])";
+            splitRegex = new Regex($"([{string.Join(@"\", OperatorsProvider.ExtendedOperators)}])");
         }
 
         public CalculationResult CalculateFromString(string expression)
@@ -93,9 +93,9 @@ namespace Calculation
 
         private IEnumerable<string> GetTokens(string expression)
         {
-            return Regex.Split(expression, splitPattern)
-                        .Where(x => !string.IsNullOrEmpty(x))
-                        .ToArray();
+            return splitRegex.Split(expression)
+                             .Where(x => !string.IsNullOrEmpty(x))
+                             .ToArray();
         }
     }
 }

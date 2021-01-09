@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Calculation
 {
     public class ExpressionNormalizer
     {
-        private readonly (string From, string To)[] unaryNormalizationPatterns;
+        private readonly (Regex Regex, string Replacement)[] unaryNormalizationPatterns;
 
         public ExpressionNormalizer()
         {
             unaryNormalizationPatterns =
                 OperatorsProvider.UnaryOperatorMapping
                                  .Keys
-                                 .Select(x => ($@"([{string.Join(@"\", OperatorsProvider.DefaultBinaryOperators)}])(\{x})|(^)(\{x})",
+                                 .Select(x => (new Regex($@"([{string.Join(@"\", OperatorsProvider.DefaultBinaryOperators)}])(\{x})|(^)(\{x})"),
                                                $"$1{OperatorsProvider.UnaryOperatorMapping[x]}"))
                                  .ToArray();
         }
@@ -22,13 +21,8 @@ namespace Calculation
         public string NormalizeExpression(string expression)
         {
             expression = expression.Replace(" ", "");
-
-            foreach (var unaryNormalizationPattern in unaryNormalizationPatterns)
-            {
-                expression = Regex.Replace(expression,
-                    unaryNormalizationPattern.From,
-                    unaryNormalizationPattern.To);
-            }
+            foreach (var (regex, replacement) in unaryNormalizationPatterns)
+                expression = regex.Replace(expression, replacement);
 
             return expression;
         }
