@@ -1,22 +1,36 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Calculation
 {
-    public static class ExpressionNormalizer
+    public class ExpressionNormalizer
     {
-        private static readonly Func<string, string> getUnaryNormalizationPattern = x =>
-            $@"([{string.Join(@"\", OperatorsProvider.DefaultBinaryOperators)}])(\{x})|(^)(\{x})";
+        private readonly (string From, string To)[] unaryNormalizationPatterns;
 
-        public static string NormalizeExpression(string expression)
+        public ExpressionNormalizer()
         {
-            var whitespacesDeleted = expression.Replace(" ", "");
-            return NormalizeUnaryOperator(NormalizeUnaryOperator(whitespacesDeleted, "+"), "-");
+            unaryNormalizationPatterns =
+                OperatorsProvider.UnaryOperatorMapping
+                                 .Keys
+                                 .Select(x => ($@"([{string.Join(@"\", OperatorsProvider.DefaultBinaryOperators)}])(\{x})|(^)(\{x})",
+                                               $"$1{OperatorsProvider.UnaryOperatorMapping[x]}"))
+                                 .ToArray();
         }
 
-        private static string NormalizeUnaryOperator(string expression, string operationToReplace) =>
-            Regex.Replace(expression,
-                          getUnaryNormalizationPattern(operationToReplace),
-                          $"$1{OperatorsProvider.UnaryOperatorMapping[operationToReplace]}");
+
+        public string NormalizeExpression(string expression)
+        {
+            expression = expression.Replace(" ", "");
+
+            foreach (var unaryNormalizationPattern in unaryNormalizationPatterns)
+            {
+                expression = Regex.Replace(expression,
+                    unaryNormalizationPattern.From,
+                    unaryNormalizationPattern.To);
+            }
+
+            return expression;
+        }
     }
 }

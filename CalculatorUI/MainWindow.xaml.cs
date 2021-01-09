@@ -27,7 +27,7 @@ namespace CalculatorUI
         {
             InitializeComponent();
             expression = new StringBuilder(500);
-            calculator = new Calculator();
+            calculator = new Calculator(new Validator(), new ExpressionNormalizer());
             bunchCalculator = new BunchCalculator(calculator);
         }
 

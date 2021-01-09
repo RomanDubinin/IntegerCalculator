@@ -10,7 +10,7 @@ namespace CalculatorUnitTests
         [SetUp]
         public void Setup()
         {
-            calculator = new Calculator();
+            calculator = new Calculator(new Validator(), new ExpressionNormalizer());
         }
 
         [Test]

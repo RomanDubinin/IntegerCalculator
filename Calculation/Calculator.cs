@@ -7,15 +7,26 @@ namespace Calculation
 {
     public class Calculator
     {
+        private readonly Validator validator;
+        private readonly ExpressionNormalizer normalizer;
+        private readonly string splitPattern;
+
+        public Calculator(Validator validator, ExpressionNormalizer normalizer)
+        {
+            this.validator = validator;
+            this.normalizer = normalizer;
+            splitPattern = $"([{string.Join(@"\", OperatorsProvider.ExtendedOperators)}])";
+        }
+
         public CalculationResult CalculateFromString(string expression)
         {
-            var validationResult = Validator.GetIndexOfInvalidCharacter(expression);
+            var validationResult = validator.GetIndexOfInvalidCharacter(expression);
             long? result = null;
             string calculationError = null;
             if (validationResult.IsSuccess)
                 try
                 {
-                    var tokens = GetTokens(ExpressionNormalizer.NormalizeExpression(expression));
+                    var tokens = GetTokens(normalizer.NormalizeExpression(expression));
                     result = CalculateInternal(tokens);
                 }
                 catch (OverflowException)
@@ -80,16 +91,11 @@ namespace Calculation
             return OperatorsProvider.ExtendedOperators.Contains(token);
         }
 
-        private string[] GetTokens(string expression)
+        private IEnumerable<string> GetTokens(string expression)
         {
-            var operators = string.Join(@"\", OperatorsProvider.ExtendedOperators);
-            var splitPattern = $"([{operators}])";
-
-            var tokens = Regex.Split(expression, splitPattern)
-                              .Where(x => !string.IsNullOrEmpty(x))
-                              .ToArray();
-
-            return tokens;
+            return Regex.Split(expression, splitPattern)
+                        .Where(x => !string.IsNullOrEmpty(x))
+                        .ToArray();
         }
     }
 }

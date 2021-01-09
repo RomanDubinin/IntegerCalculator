@@ -29,7 +29,7 @@ namespace BunchCalculatorConsole
             if (!string.IsNullOrEmpty(directory))
                 Directory.CreateDirectory(directory);
 
-            var bunchCalculator = new BunchCalculator(new Calculator());
+            var bunchCalculator = new BunchCalculator(new Calculator(new Validator(), new ExpressionNormalizer()));
             var expressions = File.ReadLines(inputFile);
             var results = bunchCalculator.Calculate(expressions);
             File.WriteAllLines(outputFile, results);

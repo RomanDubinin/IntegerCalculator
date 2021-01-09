@@ -5,6 +5,14 @@ namespace CalculatorUnitTests
 {
     public class ExpressionNormalizerTests
     {
+        private ExpressionNormalizer normalizer;
+
+        [SetUp]
+        public void SetUp()
+        {
+            normalizer = new ExpressionNormalizer();
+        }
+
         [Test]
         [TestCase("1  +2", "1+2")]
         [TestCase("-2", "~2")]
@@ -12,7 +20,7 @@ namespace CalculatorUnitTests
         [TestCase("-1--1", "~1-~1")]
         public void NormalizationTest(string expression, string expected)
         {
-            var actual = ExpressionNormalizer.NormalizeExpression(expression);
+            var actual = normalizer.NormalizeExpression(expression);
             Assert.AreEqual(expected, actual);
         }
     }

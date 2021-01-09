@@ -11,7 +11,7 @@ namespace CalculatorUnitTests
         [SetUp]
         public void Setup()
         {
-            bunchCalculator = new BunchCalculator(new Calculator());
+            bunchCalculator = new BunchCalculator(new Calculator(new Validator(), new ExpressionNormalizer()));
         }
 
         [Test]

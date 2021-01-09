@@ -3,18 +3,26 @@ using System.Text.RegularExpressions;
 
 namespace Calculation
 {
-    public static class Validator
+    public class Validator
     {
-        public static ValidationResult GetIndexOfInvalidCharacter(string expression)
+        private readonly string unacceptableSymbolsPattern;
+        private readonly string valuesWithoutOperationPattern;
+        private readonly string operationsWithoutValuesPattern;
+
+        public Validator()
         {
             var binaryOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators);
             var allOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators.Concat(OperatorsProvider.DefaultUnaryOperators));
             var onlyBinaryOperations = string.Join(@"\", OperatorsProvider.DefaultBinaryOperators.Except(OperatorsProvider.DefaultUnaryOperators));
 
-            var unacceptableSymbolsPattern = $@"[^\d {allOperations}]";
-            var valuesWithoutOperationPattern = @"\d( +)\d";
-            var operationsWithoutValuesPattern = $"(^ *[{onlyBinaryOperations}])|([{binaryOperations}] *[{onlyBinaryOperations}])|([{binaryOperations}] *[{binaryOperations}] *[{binaryOperations}])|([{binaryOperations}] *$)";
+            unacceptableSymbolsPattern = $@"[^\d {allOperations}]";
+            valuesWithoutOperationPattern = @"\d( +)\d";
+            operationsWithoutValuesPattern = $"(^ *[{onlyBinaryOperations}])|([{binaryOperations}] *[{onlyBinaryOperations}])|([{binaryOperations}] *[{binaryOperations}] *[{binaryOperations}])|([{binaryOperations}] *$)";
 
+        }
+
+        public ValidationResult GetIndexOfInvalidCharacter(string expression)
+        {
             var unacceptableSymbolsMatch = Regex.Match(expression, unacceptableSymbolsPattern);
             var valuesWithoutOperationMatch = Regex.Match(expression, valuesWithoutOperationPattern);
             var operationsWithoutValuesMatch = Regex.Match(expression, operationsWithoutValuesPattern);

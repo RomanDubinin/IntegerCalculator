@@ -5,6 +5,14 @@ namespace CalculatorUnitTests
 {
     public class ValidatorTests
     {
+        private Validator validator;
+
+        [SetUp]
+        public void SetUp()
+        {
+            validator = new Validator();
+        }
+
         [Test]
         [TestCase("1+a", 2, "Invalid character a at position 2")]
         [TestCase("-2.1", 2, "Invalid character . at position 2")]
@@ -17,7 +25,7 @@ namespace CalculatorUnitTests
         [TestCase("1+1 /", 4, "Value missed at position 4")]
         public void ValidationInvalidTest(string expression, int expectedPosition, string expectedMessage)
         {
-            var actual = Validator.GetIndexOfInvalidCharacter(expression);
+            var actual = validator.GetIndexOfInvalidCharacter(expression);
             var expected = new ValidationResult
             {
                 IsSuccess = false,
@@ -31,7 +39,7 @@ namespace CalculatorUnitTests
         [TestCase("1 *+1")]
         public void ValidationValidTest(string expression)
         {
-            var actual = Validator.GetIndexOfInvalidCharacter(expression);
+            var actual = validator.GetIndexOfInvalidCharacter(expression);
             var expected = new ValidationResult {IsSuccess = true};
             Assert.AreEqual(expected, actual);
         }
