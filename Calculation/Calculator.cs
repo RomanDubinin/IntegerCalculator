@@ -11,11 +11,17 @@ namespace Calculation
         private readonly ExpressionNormalizer normalizer;
         private readonly Regex splitRegex;
 
+        private readonly Stack<string> operators;
+        private readonly Stack<BigInteger> operands;
+
         public Calculator(Validator validator, ExpressionNormalizer normalizer)
         {
             this.validator = validator;
             this.normalizer = normalizer;
             splitRegex = new Regex($"([{string.Join(@"\", OperatorsProvider.ExtendedOperators)}])");
+
+            operators = new Stack<string>();
+            operands = new Stack<BigInteger>();
         }
 
         public CalculationResult CalculateFromString(string expression)
@@ -36,8 +42,8 @@ namespace Calculation
 
         private BigInteger CalculateInternal(IEnumerable<string> tokens)
         {
-            var operators = new Stack<string>();
-            var operands = new Stack<BigInteger>();
+            operators.Clear();
+            operands.Clear();
 
             var previousPriority = int.MaxValue;
             foreach (var token in tokens)
@@ -46,7 +52,7 @@ namespace Calculation
                 {
                     if (Priority(token) <= previousPriority)
                     {
-                        CalculateTopPriority(operands, operators, Priority(token));
+                        CalculateTopPriority(Priority(token));
                         operators.Push(token);
                     }
                     else
@@ -62,12 +68,12 @@ namespace Calculation
                 }
             }
 
-            CalculateTopPriority(operands, operators, 0);
+            CalculateTopPriority(0);
 
             return operands.Pop();
         }
 
-        private void CalculateTopPriority(Stack<BigInteger> operands, Stack<string> operators, int currentPriority)
+        private void CalculateTopPriority(int currentPriority)
         {
             while (operators.Count != 0 && currentPriority <= Priority(operators.Peek()))
             {
