@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text.RegularExpressions;
 
 namespace Calculation
@@ -21,7 +22,7 @@ namespace Calculation
         public CalculationResult CalculateFromString(string expression)
         {
             var validationResult = validator.GetIndexOfInvalidCharacter(expression);
-            long? result = null;
+            BigInteger? result = null;
             string calculationError = null;
             if (validationResult.IsSuccess)
                 try
@@ -39,10 +40,10 @@ namespace Calculation
 
         //todo make CalculateFromStream for very long expressions
 
-        private long CalculateInternal(IEnumerable<string> tokens)
+        private BigInteger CalculateInternal(IEnumerable<string> tokens)
         {
             var operators = new Stack<string>();
-            var operands = new Stack<long>();
+            var operands = new Stack<BigInteger>();
 
             var previousPriority = int.MaxValue;
             foreach (var token in tokens)
@@ -63,7 +64,7 @@ namespace Calculation
                 }
                 else
                 {
-                    operands.Push(long.Parse(token));
+                    operands.Push(BigInteger.Parse(token));
                 }
             }
 
@@ -72,7 +73,7 @@ namespace Calculation
             return operands.Pop();
         }
 
-        private void CalculateTopPriority(Stack<long> operands, Stack<string> operators, int currentPriority)
+        private void CalculateTopPriority(Stack<BigInteger> operands, Stack<string> operators, int currentPriority)
         {
             while (operators.Count != 0 && currentPriority <= Priority(operators.Peek()))
             {

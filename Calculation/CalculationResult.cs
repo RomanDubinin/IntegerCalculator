@@ -1,8 +1,10 @@
-﻿namespace Calculation
+﻿using System.Numerics;
+
+namespace Calculation
 {
     public struct CalculationResult
     {
-        public long? Result { get; set; }
+        public BigInteger? Result { get; set; }
         public ValidationResult Validation { get; set; }
         public string CalculationError { get; set; }
     }

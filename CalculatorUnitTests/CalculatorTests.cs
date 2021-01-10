@@ -1,3 +1,4 @@
+using System.Numerics;
 using Calculation;
 using NUnit.Framework;
 
@@ -25,8 +26,9 @@ namespace CalculatorUnitTests
         [TestCase("1+2*2", 5)]
         [TestCase("11+22", 33)]
         [TestCase("1+1+1*2*2*2*2+1+1+1+1", 22)]
-        public void CalculationTest(string expression, long expectedValue)
+        public void CalculationTest(string expression, int integerValue)
         {
+            var expectedValue = new BigInteger(integerValue);
             var actualValue = calculator.CalculateFromString(expression).Result;
             Assert.AreEqual(expectedValue, actualValue);
         }

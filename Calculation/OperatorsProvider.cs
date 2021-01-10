@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Calculation
 {
@@ -25,7 +26,7 @@ namespace Calculation
             {"~", 2}
         };
 
-        public static readonly Dictionary<string, Action<Stack<long>>> Actions = new Dictionary<string, Action<Stack<long>>>
+        public static readonly Dictionary<string, Action<Stack<BigInteger>>> Actions = new Dictionary<string, Action<Stack<BigInteger>>>
         {
             {"+", operands => operands.Push(operands.Pop() + operands.Pop())},
             {"-", operands => operands.Push(-operands.Pop() + operands.Pop())},

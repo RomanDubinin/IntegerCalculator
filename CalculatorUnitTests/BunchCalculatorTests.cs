@@ -18,7 +18,7 @@ namespace CalculatorUnitTests
         public void FileCalculationTest()
         {
             var lines = new[] {"1+2", "1+", "999999999999999999999999999999999999999+1"};
-            var expectedResults = new[] {"3", "Value missed at position 1", "Too large numbers"};
+            var expectedResults = new[] {"3", "Value missed at position 1", "1000000000000000000000000000000000000000"};
             var actualResults = bunchCalculator.Calculate(lines).ToArray();
             Assert.AreEqual(expectedResults, actualResults);
         }
