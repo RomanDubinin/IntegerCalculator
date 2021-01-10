@@ -79,7 +79,7 @@
                 <Button Name="OpenFileButton" Content="Open file" Click="OpenFile_Click"/>
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
-                <Button Name="SaveFileButton" Content="Save file" Click="SaveFile_Click" Visibility="Hidden"/>
+                <Button Name="SaveFileButton" Content="Calculate and save to file" Click="SaveFile_Click" Visibility="Hidden"/>
                 <Label Name="FileToCalculateLabel" Visibility="Hidden"/>
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
