@@ -17,6 +17,23 @@ namespace Extensions
             }
         }
 
+        public static bool IsFileAccessibleForWrite(string filename)
+        {
+            try
+            {
+                using var stream = File.Open(filename, FileMode.Open, FileAccess.Write, FileShare.None);
+                return stream.CanWrite;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+        }
+
+        public static bool FilesAreSame(string filename1, string filename2)
+        {
+            return Path.GetFullPath(filename1) == Path.GetFullPath(filename2);
+        }
     }
 
 }

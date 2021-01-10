@@ -48,6 +48,11 @@ namespace BunchCalculatorConsole
             if (!File.Exists(inputFile))
                 return ("\tThe input file does not exists.", null, null);
 
+            if (FileExtensions.FilesAreSame(inputFile, outputFile))
+            {
+                return ("\tFiles are same. Choose other output file.", null, null);
+            }
+
             if (File.Exists(outputFile))
             {
                 Console.WriteLine("\tThe output file already exists.");
@@ -63,6 +68,11 @@ namespace BunchCalculatorConsole
                 {
                     return ("", null, null);
                 }
+            }
+
+            if (!FileExtensions.IsFileAccessibleForWrite(outputFile))
+            {
+                return ($"\tFile {outputFile} is inaccessible to write. Choose other output file.", null, null);
             }
 
             return (null, inputFile, outputFile);

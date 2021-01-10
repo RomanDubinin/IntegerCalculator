@@ -176,10 +176,25 @@ namespace CalculatorUI
                 CalculatingInProcessLabel.Content = $"Calculating into file {fileToSaveCalculations} ...";
                 CalculatingInProcessLabel.Visibility = Visibility.Visible;
 
-                await Task.Run(CalculateFile).ConfigureAwait(true);
+                if (!FileExtensions.IsFileAccessibleForWrite(fileToSaveCalculations))
+                {
+                    SaveFileButton.Visibility = Visibility.Visible;
+                    FileToCalculateLabel.Visibility = Visibility.Visible;
+                    FileToCalculateLabel.Content = "Output file is inaccessible to write. Choose other output file.";
+                }
+                else if (FileExtensions.FilesAreSame(fileToCalculate, fileToSaveCalculations))
+                {
+                    SaveFileButton.Visibility = Visibility.Visible;
+                    FileToCalculateLabel.Visibility = Visibility.Visible;
+                    FileToCalculateLabel.Content = "Files are same. Choose other output file.";
+                }
+                else
+                {
+                    await Task.Run(CalculateFile).ConfigureAwait(true);
+                    OpenFileButton.Visibility = Visibility.Visible;
+                }
 
                 CalculatingInProcessLabel.Visibility = Visibility.Hidden;
-                OpenFileButton.Visibility = Visibility.Visible;
             }
         }
 
