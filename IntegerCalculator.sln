@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorUI", "CalculatorU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunchCalculatorConsole", "BunchCalculatorConsole\BunchCalculatorConsole.csproj", "{0A4AAC48-E6E3-4FA5-A6C7-01D0703FD50B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Extensions\Extensions.csproj", "{A8122BC0-8C45-4634-952F-C7046D0CE039}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{0A4AAC48-E6E3-4FA5-A6C7-01D0703FD50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4AAC48-E6E3-4FA5-A6C7-01D0703FD50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4AAC48-E6E3-4FA5-A6C7-01D0703FD50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8122BC0-8C45-4634-952F-C7046D0CE039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8122BC0-8C45-4634-952F-C7046D0CE039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8122BC0-8C45-4634-952F-C7046D0CE039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8122BC0-8C45-4634-952F-C7046D0CE039}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

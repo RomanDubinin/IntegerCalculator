@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Calculation;
+using Extensions;
 using Microsoft.Win32;
 
 namespace CalculatorUI
@@ -191,7 +192,7 @@ namespace CalculatorUI
         {
             var expressions = File.ReadLines(fileToCalculate);
             var results = bunchCalculator.Calculate(expressions);
-            File.WriteAllLines(fileToSaveCalculations, results);
+            FileExtensions.WriteAllLines(fileToSaveCalculations, results);
         }
 
         #endregion

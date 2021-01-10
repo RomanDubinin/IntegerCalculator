@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Calculation;
+using Extensions;
 
 namespace BunchCalculatorConsole
 {
@@ -32,7 +33,7 @@ namespace BunchCalculatorConsole
             var bunchCalculator = new BunchCalculator(new Calculator(new Validator(), new ExpressionNormalizer()));
             var expressions = File.ReadLines(inputFile);
             var results = bunchCalculator.Calculate(expressions);
-            File.WriteAllLines(outputFile, results);
+            FileExtensions.WriteAllLines(outputFile, results);
         }
 
         private static (string error, string inputFile, string outputFile) ParseCommandLineArguments(string[] args)

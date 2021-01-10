@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Calculation\Calculation.csproj" />
+      <ProjectReference Include="..\Extensions\Extensions.csproj" />
     </ItemGroup>
 
 </Project>
