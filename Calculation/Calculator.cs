@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
@@ -25,15 +24,10 @@ namespace Calculation
             BigInteger? result = null;
             string calculationError = null;
             if (validationResult.IsSuccess)
-                try
-                {
-                    var tokens = GetTokens(normalizer.NormalizeExpression(expression));
-                    result = CalculateInternal(tokens);
-                }
-                catch (OverflowException)
-                {
-                    calculationError = "Too large numbers";
-                }
+            {
+                var tokens = GetTokens(normalizer.NormalizeExpression(expression));
+                result = CalculateInternal(tokens);
+            }
 
             return new CalculationResult {Result = result, Validation = validationResult, CalculationError = calculationError};
         }
