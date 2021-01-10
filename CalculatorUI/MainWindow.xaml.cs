@@ -118,15 +118,10 @@ namespace CalculatorUI
                 ErrorScreen.Text = calculationResult.Validation.ErrorMessage;
                 AnswerScreen.Text = "";
             }
-            else if (calculationResult.CalculationError != null)
-            {
-                ErrorScreen.Text = calculationResult.CalculationError;
-                AnswerScreen.Text = "";
-            }
             else
             {
                 ErrorScreen.Text = "";
-                AnswerScreen.Text = calculationResult.Result.ToString();
+                AnswerScreen.Text = calculationResult.Result!.ToString()!;
             }
         }
 

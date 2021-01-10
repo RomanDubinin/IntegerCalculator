@@ -28,14 +28,13 @@ namespace Calculation
         {
             var validationResult = validator.GetIndexOfInvalidCharacter(expression);
             BigInteger? result = null;
-            string calculationError = null;
             if (validationResult.IsSuccess)
             {
                 var tokens = GetTokens(normalizer.NormalizeExpression(expression));
                 result = CalculateInternal(tokens);
             }
 
-            return new CalculationResult {Result = result, Validation = validationResult, CalculationError = calculationError};
+            return new CalculationResult {Result = result, Validation = validationResult};
         }
 
         //todo make CalculateFromStream for very long expressions

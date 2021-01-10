@@ -22,8 +22,6 @@ namespace Calculation
 
                 if (!result.Validation.IsSuccess)
                     yield return result.Validation.ErrorMessage;
-                else if (result.CalculationError != null)
-                    yield return result.CalculationError;
                 else
                     yield return result.Result.ToString();
             }
